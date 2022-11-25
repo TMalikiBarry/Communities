@@ -1,0 +1,7 @@
+<mat-list *ngIf="comments.length">
+  <h1 matSubheader>Commentaires</h1>
+  <mat-list-item *ngFor="let comment of comments">
+    <span matLine> {{ comment.comment }}</span>
+    <span matLine> {{ comment.createdDate | date: 'medium'}}</span>
+  </mat-list-item>
+</mat-list>
