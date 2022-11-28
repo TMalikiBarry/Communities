@@ -1,3 +1,15 @@
+.comments-row {
+  display: flex;
+  border-top: thin solid #111;
+  padding-top: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+mat-form-field {
+  width: 90%;
+}
+
 mat-list-item:not(:last-child) {
-  border-bottom: 0.1rem solid #444;
+  border-bottom: .07rem solid #666;
 }
