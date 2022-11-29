@@ -10,7 +10,7 @@ import {FormBuilder, Validators} from "@angular/forms";
 export class CommentsComponent implements OnInit {
 
   @Input() comments!: Comment[];
-  @Output() newComment = new EventEmitter<string>;
+  @Output() newComment= new EventEmitter<string>;
 
   commentControl = this.fb.control('', [Validators.required, Validators.minLength(15)]);
 
@@ -21,7 +21,7 @@ export class CommentsComponent implements OnInit {
   }
 
   onLeaveComment() {
-    if (this.commentControl.invalid || !this.commentControl.value) {
+    if (this.commentControl.invalid || !this.commentControl.value){
       return;
     }
     this.newComment.emit(this.commentControl.value);

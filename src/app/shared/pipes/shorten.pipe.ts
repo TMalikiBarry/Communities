@@ -4,9 +4,9 @@ import {Pipe, PipeTransform} from "@angular/core";
   name: 'shorten'
 })
 
-export class ShortenPipe implements PipeTransform {
-  transform(value: string, maxLenght = 200): string {
-    if (value.length <= maxLenght) {
+export class ShortenPipe implements PipeTransform{
+  transform(value: string,maxLenght = 200): string {
+    if (value.length<= maxLenght){
       return value;
     }
     return `${value.slice(0, maxLenght)}...`;
