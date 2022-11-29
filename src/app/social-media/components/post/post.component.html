@@ -9,10 +9,10 @@
   </mat-card-header>
   <mat-card-content>
     <img *ngIf="post.imageUrl as imageUrl" [alt]="post.title" [src]="imageUrl" matCardImage>
-    <span> {{ post.content }}</span>
+    <span> {{ post.content | shorten}}</span>
   </mat-card-content>
   <mat-card-actions>
-    <app-comments [comments]="post.comments"></app-comments>
+    <app-comments (newComment)="onNewComment($event)" [comments]="post.comments"></app-comments>
   </mat-card-actions>
 </mat-card>
 
