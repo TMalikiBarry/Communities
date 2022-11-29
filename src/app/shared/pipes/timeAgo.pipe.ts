@@ -18,7 +18,6 @@ export class TimeAgoPipe implements PipeTransform{
   transform(value: string | Date): string {
 
     const diff = Date.now() - new Date(value).getTime();
-
     if (diff < this.timeDiffs.minute) {
       return diff / (1000) < 2 ? 'Il y a une seconde' : `Il y a ${Math.trunc(diff / (1000))} secondes`;
     } else if (diff < this.timeDiffs.hour) {
