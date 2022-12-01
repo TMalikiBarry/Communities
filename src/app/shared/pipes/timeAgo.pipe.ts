@@ -25,7 +25,12 @@ export class TimeAgoPipe implements PipeTransform{
     } else if (diff < this.timeDiffs.day) {
       return diff / (60 * 60 * 1000) < 2 ? 'Il y a une heure' : `Il y a ${Math.trunc(diff / (60 * 60 * 1000))} heures`;
     } else if (diff < this.timeDiffs.week) {
-      return diff / (24 * 60 * 60 * 1000) < 2 ? 'Il y a un jour' : `Il y a ${Math.trunc(diff / (24 * 60 * 60 * 1000))} jours`;
+      if (diff / (24 * 60 * 60 * 1000) < 2) {
+        return 'Hier';
+      } else if (diff / (24 * 60 * 60 * 1000) < 3) {
+        return 'Avant-hier';
+      }
+      return `Il y a ${Math.trunc(diff / (24 * 60 * 60 * 1000))} jours`;
     } else if (diff < this.timeDiffs.month) {
       return diff / (7 * 24 * 60 * 60 * 1000) < 2 ? 'Il y a une semaine' : `Il y a ${Math.trunc(diff / (7 * 24 * 60 * 60 * 1000))} semaines`;
     } else if (diff < this.timeDiffs.year) {

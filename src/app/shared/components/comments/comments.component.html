@@ -2,7 +2,7 @@
   <mat-form-field>
     <input [formControl]="commentControl" matInput placeholder="Laissez un commentaire..." type="text">
   </mat-form-field>
-  <button (click)="onLeaveComment()" color="primary" mat-icon-button>
+  <button (click)="onLeaveComment()" color="primary" mat-icon-button aria-label="send">
     <mat-icon>send</mat-icon>
   </button>
 </div>
