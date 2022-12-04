@@ -44,6 +44,7 @@ export class HighlightDirective implements AfterViewInit{
   }
 
   @HostListener('mouseleave') onMouseLeave() {
+    this.clicked = false;
     this.setBeautifulStyles(this.color);
   }
 

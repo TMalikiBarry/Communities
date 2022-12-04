@@ -1,7 +1,7 @@
 <mat-card class="mat-elevation-z8">
   <mat-card-header>
     <mat-card-title>
-      <span highlight [color]="'#ec7878'">{{post.title}} </span>
+      <span highlight [color]="'orange'">{{post.title}} </span>
       <!--<span highlight color="red">{{post.title}} </span>
       <span [highlight]="'red'">{{post.title}} </span>-->
     </mat-card-title>
@@ -10,8 +10,8 @@
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <img *ngIf="post.imageUrl as imageUrl" [alt]="post.title" [src]="imageUrl" matCardImage>
-    <span> {{ post.content | shorten}}</span>
+    <img *ngIf="post.imageUrl as imageUrl" [alt]="post.title.substring(0, 12)" [src]="imageUrl" matCardImage>
+    <p> {{ post.content | shorten}}</p>
   </mat-card-content>
   <mat-card-actions>
     <app-comments (newComment)="onNewComment($event)" [comments]="post.comments"></app-comments>
