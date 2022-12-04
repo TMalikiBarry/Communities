@@ -1,4 +1,4 @@
-import {AfterViewInit, Directive, ElementRef, Input, Renderer2} from "@angular/core";
+import {AfterViewInit, Directive, ElementRef, HostListener, Input, Renderer2} from "@angular/core";
 
 @Directive({
   selector: '[highlight]'
@@ -10,6 +10,7 @@ export class HighlightDirective implements AfterViewInit{
 
   // @Input() highlight:string = 'yellow';
 
+  clicked: boolean = false;
   constructor(private el: ElementRef,
               private renderer: Renderer2) {
   }
@@ -23,5 +24,30 @@ export class HighlightDirective implements AfterViewInit{
 
   setBeautifulStyles(color: string) {
     this.renderer.setStyle(this.el.nativeElement, 'background-color', color);
+    this.renderer.setStyle(this.el.nativeElement, 'color', 'black');
+    if (color === 'brown' || color === 'black'){
+      this.renderer.setStyle(this.el.nativeElement, 'color', 'white');
+    }
+  }
+
+  getTheColor() {
+    if (!this.clicked){
+      this.clicked = !this.clicked;
+      return 'brown';
+    }
+    this.clicked = !this.clicked;
+    return this.color;
+  }
+
+  @HostListener('mouseenter') onMouseEnter(){
+    this.setBeautifulStyles('lightgreen');
+  }
+
+  @HostListener('mouseleave') onMouseLeave() {
+    this.setBeautifulStyles(this.color);
+  }
+
+  @HostListener('click') onClick() {
+    this.setBeautifulStyles(this.getTheColor());
   }
 }
