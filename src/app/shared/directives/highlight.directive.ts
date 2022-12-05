@@ -6,9 +6,7 @@ import {AfterViewInit, Directive, ElementRef, HostListener, Input, Renderer2} fr
 
 export class HighlightDirective implements AfterViewInit{
 
-  @Input() color:string = 'yellow';
-
-  // @Input() highlight:string = 'yellow';
+  @Input() highlight:string = 'yellow';
 
   clicked: boolean = false;
   constructor(private el: ElementRef,
@@ -18,7 +16,7 @@ export class HighlightDirective implements AfterViewInit{
   ngAfterViewInit(): void {
     this.renderer.setStyle(this.el.nativeElement, 'display', 'flex');
     this.renderer.setStyle(this.el.nativeElement, 'justify-content', 'center');
-    this.setBeautifulStyles(this.color);
+    this.setBeautifulStyles(this.highlight);
     // this.setBeautifulStyles(this.highlight);
   }
 
@@ -36,7 +34,7 @@ export class HighlightDirective implements AfterViewInit{
       return 'brown';
     }
     this.clicked = !this.clicked;
-    return this.color;
+    return this.highlight;
   }
 
   @HostListener('mouseenter') onMouseEnter(){
@@ -45,7 +43,7 @@ export class HighlightDirective implements AfterViewInit{
 
   @HostListener('mouseleave') onMouseLeave() {
     this.clicked = false;
-    this.setBeautifulStyles(this.color);
+    this.setBeautifulStyles(this.highlight);
   }
 
   @HostListener('click') onClick() {

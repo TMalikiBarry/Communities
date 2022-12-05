@@ -25,6 +25,11 @@ export class PostsListComponent implements OnInit {
   }
 
   onPostCommented(commentedPost: { comment: string, postId: number }) {
-    this.psService.addComment(commentedPost);
+    this.psService.addComment(commentedPost).subscribe({
+      // complete:()=> this.router.navigateByUrl('social-media')
+      complete:()=> window.location.reload()
+    }
+
+  );
   }
 }
