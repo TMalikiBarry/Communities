@@ -1,4 +1,5 @@
 import {Pipe, PipeTransform} from "@angular/core";
+import {DatePipe} from "@angular/common";
 
 @Pipe(
   {name: 'timeAgo'}
@@ -19,9 +20,9 @@ export class TimeAgoPipe implements PipeTransform{
 
     const diff = Date.now() - new Date(value).getTime();
     if (diff < this.timeDiffs.minute) {
-      return diff / (1000) < 2 ? 'Il y a une seconde' : `Il y a ${Math.trunc(diff / (1000))} secondes`;
+      return `Il y a quelques secondes`;
     } else if (diff < this.timeDiffs.hour) {
-      return diff / (60 * 1000) < 2 ? 'Il y a une minute' : `Il y a ${Math.trunc(diff / (60 * 1000))} minutes`;
+      return `Il y a Il y a quelques minutes`;
     } else if (diff < this.timeDiffs.day) {
       return diff / (60 * 60 * 1000) < 2 ? 'Il y a une heure' : `Il y a ${Math.trunc(diff / (60 * 60 * 1000))} heures`;
     } else if (diff < this.timeDiffs.week) {
@@ -35,9 +36,11 @@ export class TimeAgoPipe implements PipeTransform{
       return diff / (7 * 24 * 60 * 60 * 1000) < 2 ? 'Il y a une semaine' : `Il y a ${Math.trunc(diff / (7 * 24 * 60 * 60 * 1000))} semaines`;
     } else if (diff < this.timeDiffs.year) {
       return diff / (30 * 24 * 60 * 60 * 1000) < 2 ? 'Il y a un mois' : `Il y a ${Math.trunc(diff / (30 * 24 * 60 * 60 * 1000))} mois`;
+    } else if (diff < 3*this.timeDiffs.year) {
+      return (diff / (365 * 24 * 60 * 60 * 1000) < 2 ) ? 'Il y a un an' : `Il y a ${Math.trunc(diff / (365 * 24 * 60 * 60 * 1000))} ans`;
     }
 
-    return diff / (365 * 24 * 60 * 60 * 1000) < 2 ? 'Il y a un an' : `Il y a ${Math.trunc(diff / (365 * 24 * 60 * 60 * 1000))} ans`;
+    return <string>new DatePipe('en').transform(value, 'short');
   }
 
 }
