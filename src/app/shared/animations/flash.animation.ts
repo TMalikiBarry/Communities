@@ -1,1 +1,7 @@
-export const FlashAnimation = {}
+
+
+export const FlashAnimation = {
+
+
+
+}
