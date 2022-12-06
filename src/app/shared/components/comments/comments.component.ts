@@ -23,6 +23,8 @@ import {SlideAndFadeAnimation} from "../../animations/slide-and-fade.animation";
   animations: [
     trigger('list', [transition(':enter',
       query('@listItem',
+        // Étalez des animations de liste avec stagger
+        // Déclenchez l'animation d'un élément enfant avec animateChild
         stagger(200, animateChild())
       )
     )]),
