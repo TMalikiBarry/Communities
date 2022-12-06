@@ -60,7 +60,7 @@ import {SlideAndFadeAnimation} from "../../animations/slide-and-fade.animation";
         }),
         // assure l'exécution des animations en parallèle
         group([
-          // Pour assurer l'exécution des animations en série dans une méthode group
+          // Pour assurer l'exécution des animations en série dans une méthode groupe
           useAnimation(FlashAnimation, {
             params: {
               inTime: '500ms',
