@@ -1,7 +1,20 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Comment} from "../../../core/models/comment";
 import {FormBuilder, Validators} from "@angular/forms";
-import {animate, animateChild, query, stagger, state, style, transition, trigger} from "@angular/animations";
+import {
+  animate,
+  animateChild,
+  group,
+  query,
+  stagger,
+  state,
+  style,
+  transition,
+  trigger,
+  useAnimation
+} from "@angular/animations";
+import {FlashAnimation} from "../../animations/flash.animation";
+import {SlideAndFadeAnimation} from "../../animations/slide-and-fade.animation";
 
 @Component({
   selector: 'app-comments',
@@ -34,17 +47,39 @@ import {animate, animateChild, query, stagger, state, style, transition, trigger
       // [void => *, :enter] du vide vers n'importe quel état.
       // [* => void, :leave] de n'importe quel état vers le vide.
       // void<=>* les deux sens
+      // Angular traite les animations dans l'ordre, donc assure l'exécution en série par défaut
       transition('void => *', [
-        style({
-          transform: 'translateX(-100%)',
-          opacity: 0,
-          'background-color': 'rgb(201, 157, 242)'
+        query('.comment-content, .comment-date', style({
+          opacity: 0
+        })),
+        useAnimation(SlideAndFadeAnimation, {
+          params: {
+            bgColor: 'rgb(201, 157, 242)',
+            time: '400ms'
+          }
         }),
-        animate('350ms ease-out', style({
-          transform: 'translateX(0%)',
-          opacity: 1,
-          'background-color': 'white'
-        }))
+        // assure l'exécution des animations en parallèle
+        group([
+          // Pour assurer l'exécution des animations en série dans une méthode group
+          useAnimation(FlashAnimation, {
+            params: {
+              inTime: '500ms',
+              'bg-color': 'rgb(201, 157, 242)',
+              outTime: '700ms'
+            }
+          }),
+          query('.comment-content', [
+            animate('250ms', style({
+              opacity: 1
+            }))
+          ]),
+          query('.comment-date', [
+            animate(600, style({
+              opacity: 1
+            }))
+          ]),
+        ])
+
       ])
     ])
   ]
