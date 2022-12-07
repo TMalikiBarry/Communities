@@ -15,6 +15,7 @@ import {
 } from "@angular/animations";
 import {FlashAnimation} from "../../animations/flash.animation";
 import {SlideAndFadeAnimation} from "../../animations/slide-and-fade.animation";
+import {PostsService} from "../../../social-media/services/posts.service";
 
 @Component({
   selector: 'app-comments',
@@ -23,8 +24,6 @@ import {SlideAndFadeAnimation} from "../../animations/slide-and-fade.animation";
   animations: [
     trigger('list', [transition(':enter',
       query('@listItem',
-        // Étalez des animations de liste avec stagger
-        // Déclenchez l'animation d'un élément enfant avec animateChild
         stagger(200, animateChild())
       )
     )]),
@@ -46,10 +45,6 @@ import {SlideAndFadeAnimation} from "../../animations/slide-and-fade.animation";
         animate('400ms ease-in-out')
       ]),
 
-      // [void => *, :enter] du vide vers n'importe quel état.
-      // [* => void, :leave] de n'importe quel état vers le vide.
-      // void<=>* les deux sens
-      // Angular traite les animations dans l'ordre, donc assure l'exécution en série par défaut
       transition('void => *', [
         query('.comment-content, .comment-date', style({
           opacity: 0
@@ -89,35 +84,30 @@ import {SlideAndFadeAnimation} from "../../animations/slide-and-fade.animation";
 export class CommentsComponent implements OnInit {
 
   @Input() comments!: Comment[];
-  @Output() newComment= new EventEmitter<string>;
+  @Output() newComment = new EventEmitter<string>;
 
   // listItemAnimationsState: 'default' | 'hover' = 'default';
 
-  animationStates: {[key: number]: 'default' | 'hover'} = {};
+  animationStates: { [key: number]: 'default' | 'hover' } = {};
 
   commentControl = this.fb.control('', [Validators.required, Validators.minLength(15)]);
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+              private psService: PostsService) {
   }
 
   ngOnInit(): void {
-    for (let index in this.comments){
+    for (let index in this.comments) {
       this.animationStates[index] = 'default';
     }
   }
 
   onLeaveComment() {
-    if (this.commentControl.invalid || !this.commentControl.value){
+    if (this.commentControl.invalid || !this.commentControl.value) {
       return;
     }
-    const maxId = Math.max(...this.comments.map((item)=>item.id));
-    this.comments.unshift({
-      id: maxId + 1,
-      comment: this.commentControl.value,
-      createdDate: new Date().toISOString(),
-      userId: 1
-    })
-    this.newComment.emit(this.commentControl.value);
+    this.comments = this.psService.newCommentsTable(this.comments, this.commentControl.value);
+    this.newComment.emit(this.commentControl.value!);
     this.commentControl.reset();
   }
 

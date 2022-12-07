@@ -18,18 +18,12 @@ export class PostsListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.posts$ = this.route.data.pipe(
       map((data) => data['posts']),
     );
   }
 
   onPostCommented(commentedPost: { comment: string, postId: number }) {
-    this.psService.addComment(commentedPost).subscribe({
-      // complete:()=> this.router.navigateByUrl('social-media')
-      complete:()=> window.location.reload()
-    }
-
-  );
+    this.psService.addComment(commentedPost).subscribe();
   }
 }
