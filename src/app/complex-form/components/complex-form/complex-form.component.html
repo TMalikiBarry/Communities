@@ -17,32 +17,32 @@
   </mat-card>
   <mat-card class="form-card">
     <mat-card-subtitle>Comment préférez-vous être contacté(e)</mat-card-subtitle>
-    <mat-radio-group [formControl]="contactPreferenceCntrl" color="primary">
+    <mat-radio-group [formControl]="contactPreferenceCtrl" color="primary">
       <mat-radio-button value="email">Email</mat-radio-button>
       <mat-radio-button value="phone">Téléphone</mat-radio-button>
     </mat-radio-group>
   </mat-card>
-  <mat-card *ngIf="showEmailCntrl$ | async" [formGroup]="emailForm" class="form-card">
+  <mat-card *ngIf="showEmailCtrl$ | async" [formGroup]="emailForm" class="form-card">
     <mat-card-subtitle>Email</mat-card-subtitle>
     <div class="form-row">
       <mat-form-field appearance="outline">
         <mat-label>Adresse mail</mat-label>
         <input formControlName="email" matInput type="text">
-        <mat-error>{{getFormControlErrorText(emailCntrl)}}</mat-error>
+        <mat-error>{{getFormControlErrorText(emailCtrl)}}</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Confirmez votre adresse mail</mat-label>
         <input formControlName="confirm" matInput type="text">
-        <mat-error>{{getFormControlErrorText(confirmEmailCntrl)}}</mat-error>
+        <mat-error>{{getFormControlErrorText(confirmEmailCtrl)}}</mat-error>
       </mat-form-field>
     </div>
   </mat-card>
-  <mat-card *ngIf="showPhoneCntrl$ | async" class="form-card">
+  <mat-card *ngIf="showPhoneCtrl$ | async" class="form-card">
     <mat-card-subtitle>Téléphone</mat-card-subtitle>
     <mat-form-field appearance="outline">
       <mat-label>Numéro de téléphone</mat-label>
-      <input [formControl]="phoneCntrl" matInput type="text">
-      <mat-error>{{getFormControlErrorText(phoneCntrl)}}</mat-error>
+      <input [formControl]="phoneCtrl" matInput type="text">
+      <mat-error>{{getFormControlErrorText(phoneCtrl)}}</mat-error>
     </mat-form-field>
   </mat-card>
   <mat-card class="form-card" formGroupName="loginInfo">
