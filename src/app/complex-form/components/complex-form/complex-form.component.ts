@@ -15,14 +15,14 @@ export class ComplexFormComponent implements OnInit {
   personalInfoForm!: FormGroup;
   emailForm!: FormGroup;
   loginInfoForm!: FormGroup;
-  contactPreferenceCntrl!: FormControl;
-  phoneCntrl!: FormControl;
-  emailCntrl!: FormControl;
-  confirmEmailCntrl!: FormControl;
-  passwordCntrl!: FormControl;
-  confirmPasswordCntrl!: FormControl;
-  showPhoneCntrl$!: Observable<boolean>;
-  showEmailCntrl$!: Observable<boolean>;
+  contactPreferenceCtrl!: FormControl;
+  phoneCtrl!: FormControl;
+  emailCtrl!: FormControl;
+  confirmEmailCtrl!: FormControl;
+  passwordCtrl!: FormControl;
+  confirmPasswordCtrl!: FormControl;
+  showPhoneCtrl$!: Observable<boolean>;
+  showEmailCtrl$!: Observable<boolean>;
 
   constructor(private fb: FormBuilder,
               private cfService: ComplexFormService) {
@@ -39,67 +39,67 @@ export class ComplexFormComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
     });
-    this.contactPreferenceCntrl = this.fb.control('email');
-    this.phoneCntrl = this.fb.control('');
-    this.emailCntrl = this.fb.control('');
-    this.confirmEmailCntrl = this.fb.control('');
+    this.contactPreferenceCtrl = this.fb.control('email');
+    this.phoneCtrl = this.fb.control('');
+    this.emailCtrl = this.fb.control('');
+    this.confirmEmailCtrl = this.fb.control('');
     this.emailForm = this.fb.group({
-      email: this.emailCntrl,
-      confirm: this.confirmEmailCntrl,
+      email: this.emailCtrl,
+      confirm: this.confirmEmailCtrl,
     });
-    this.passwordCntrl = this.fb.control('', Validators.required);
-    this.confirmPasswordCntrl = this.fb.control('', Validators.required);
+    this.passwordCtrl = this.fb.control('', Validators.required);
+    this.confirmPasswordCtrl = this.fb.control('', Validators.required);
     this.loginInfoForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(35)]],
-      password: this.passwordCntrl,
-      confirmPassword: this.confirmPasswordCntrl
+      password: this.passwordCtrl,
+      confirmPassword: this.confirmPasswordCtrl
     })
   }
 
   initMainForm() {
     this.mainForm = this.fb.group({
       personalInfo: this.personalInfoForm,
-      contactPreference: this.contactPreferenceCntrl,
+      contactPreference: this.contactPreferenceCtrl,
       email: this.emailForm,
-      phone: this.phoneCntrl,
+      phone: this.phoneCtrl,
       loginInfo: this.loginInfoForm
     });
   }
 
   initFormObservables() {
-    this.showEmailCntrl$ = this.contactPreferenceCntrl.valueChanges.pipe(
-      startWith(this.contactPreferenceCntrl.value),
+    this.showEmailCtrl$ = this.contactPreferenceCtrl.valueChanges.pipe(
+      startWith(this.contactPreferenceCtrl.value),
       map((preference) => preference === 'email'),
       tap((showEmailForm) => this.setEmailValidators(showEmailForm))
     );
-    this.showPhoneCntrl$ = this.contactPreferenceCntrl.valueChanges.pipe(
-      startWith(this.contactPreferenceCntrl.value),
+    this.showPhoneCtrl$ = this.contactPreferenceCtrl.valueChanges.pipe(
+      startWith(this.contactPreferenceCtrl.value),
       map((preference) => preference === 'phone'),
-      tap((showPhoneCntrl) => this.setPhoneValidators(showPhoneCntrl))
+      tap((showPhoneCtrl) => this.setPhoneValidators(showPhoneCtrl))
     );
   }
 
   setEmailValidators(showEmailForm: boolean) {
     if (showEmailForm) {
-      this.emailCntrl.addValidators([Validators.required, Validators.email]);
-      this.confirmEmailCntrl.addValidators([Validators.required, Validators.email]);
+      this.emailCtrl.addValidators([Validators.required, Validators.email]);
+      this.confirmEmailCtrl.addValidators([Validators.required, Validators.email]);
     } else {
-      this.emailCntrl.clearValidators();
-      this.confirmEmailCntrl.clearValidators();
+      this.emailCtrl.clearValidators();
+      this.confirmEmailCtrl.clearValidators();
       this.emailForm.reset();
     }
-    this.emailCntrl.updateValueAndValidity();
-    this.confirmEmailCntrl.updateValueAndValidity();
+    this.emailCtrl.updateValueAndValidity();
+    this.confirmEmailCtrl.updateValueAndValidity();
   }
 
-  setPhoneValidators(showPhoneCntrl: boolean) {
-    if (showPhoneCntrl) {
-      this.phoneCntrl.addValidators([Validators.required, Validators.pattern('((\\+|00)?[0-9]{3})?[0-9]{2}[0-9]{7}')]);
+  setPhoneValidators(showPhoneCtrl: boolean) {
+    if (showPhoneCtrl) {
+      this.phoneCtrl.addValidators([Validators.required, Validators.pattern('((\\+|00)?[0-9]{3})?[0-9]{2}[0-9]{7}')]);
     } else {
-      this.phoneCntrl.clearValidators();
-      this.phoneCntrl.reset();
+      this.phoneCtrl.clearValidators();
+      this.phoneCtrl.reset();
     }
-    this.phoneCntrl.updateValueAndValidity();
+    this.phoneCtrl.updateValueAndValidity();
   }
 
   onSubmitForm() {
@@ -109,7 +109,7 @@ export class ComplexFormComponent implements OnInit {
         this.loading = false;
         if (saved) {
           this.mainForm.reset();
-          this.contactPreferenceCntrl.patchValue('email');
+          this.contactPreferenceCtrl.patchValue('email');
         } else {
           console.error('Echec de l\'enregistrement...');
         }
@@ -117,16 +117,16 @@ export class ComplexFormComponent implements OnInit {
     ).subscribe();
   }
 
-  getFormControlErrorText(cntrl: AbstractControl) {
-    if (cntrl.hasError('required')) {
+  getFormControlErrorText(ctrl: AbstractControl) {
+    if (ctrl.hasError('required')) {
       return 'Ce champ est requis';
-    } else if (cntrl.hasError('email')) {
+    } else if (ctrl.hasError('email')) {
       return 'veuillez renseignez un format d\'email correct';
-    } else if (cntrl.hasError('pattern')) {
+    } else if (ctrl.hasError('pattern')) {
       return 'Ce format de numéro de téléphone n\'est pas pris en compte';
-    } else if (cntrl.hasError('minlength')) {
+    } else if (ctrl.hasError('minlength')) {
       return 'Nom d\'utilisateur trop court';
-    } else if (cntrl.hasError('maxlength')) {
+    } else if (ctrl.hasError('maxlength')) {
       return 'Nom d\'utilisateur trop long';
     } else {
       return 'Ce champ contient une erreur';
