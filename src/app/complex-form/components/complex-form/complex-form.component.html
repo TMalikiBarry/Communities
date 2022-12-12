@@ -36,6 +36,9 @@
         <mat-error>{{getFormControlErrorText(confirmEmailCtrl)}}</mat-error>
       </mat-form-field>
     </div>
+    <div *ngIf="showEmailError$| async" class="error-text">
+      <small>Les deux mots de passe ne correspondent pas</small>
+    </div>
   </mat-card>
   <mat-card *ngIf="showPhoneCtrl$ | async" class="form-card">
     <mat-card-subtitle>Téléphone</mat-card-subtitle>
@@ -64,6 +67,9 @@
         <mat-error>Ce champ est requis</mat-error>
       </mat-form-field>
     </div>
+    <div *ngIf="showPasswordError$ | async" class="error-text">
+      <small>Les deux mots de passe ne correspondent pas</small>
+    </div>
   </mat-card>
   <mat-card-actions>
     <button (click)="onSubmitForm()" *ngIf="mainForm.valid" [disabled]="loading"
@@ -72,5 +78,5 @@
     <p *ngIf="mainForm.invalid" style="color: orange"><em>Le bouton 'ENREGISTRER' apparaîtra une fois le formumaire
       valide</em></p>
   </mat-card-actions>
-  <mat-spinner *ngIf="loading" color="primary" mode="indeterminate"></mat-spinner>
+  <mat-spinner *ngIf="loading" class="centering-spinner" color="primary" mode="indeterminate"></mat-spinner>
 </mat-card>

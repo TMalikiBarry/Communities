@@ -7,7 +7,10 @@ import {confirmEqualValidator} from "../../validators/confirm-equal.validator";
 @Component({
   selector: 'app-complex-form',
   templateUrl: './complex-form.component.html',
-  styleUrls: ['./complex-form.component.scss']
+  styleUrls: ['./complex-form.component.scss'],
+  /*styleUrls: ['./complex-form.component.scss'
+    , '../../../reactive-state/components/candidates-list/candidates-list.component.scss'
+  ]*/
 })
 export class ComplexFormComponent implements OnInit {
 
