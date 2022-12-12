@@ -8,7 +8,7 @@
     </div>
   </ng-container>
   <mat-card-actions>
-    <mat-spinner *ngIf="loading$ | async; else buttons"></mat-spinner>
+    <mat-spinner *ngIf="loading$ | async; else buttons" class="centering-spinner"></mat-spinner>
     <ng-template #buttons>
       <div class="action-buttons">
         <button (click)="onHire()" color="accent" mat-flat-button>EMBAUCHER</button>
