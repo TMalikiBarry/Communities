@@ -38,8 +38,11 @@ export class CandidatesService {
   }
 
   getCandidateById(id: number): Observable<Candidate> {
+    if (!this.lastCandidatesLoad) {
+      this.getCandidatesFromServer();
+    }
     return this.candidates$.pipe(
-      tap(() => this.getCandidatesFromServer()),
+      // tap(() => this.getCandidatesFromServer()),
       map(candidates => candidates.filter(candidate => candidate.id === id)[0]),
       // map(candidates => candidates.find(candidate => candidate.id === id)),
     );

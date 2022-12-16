@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {exhaustMap, Observable} from "rxjs";
 import {Candidate} from "../../models/candidate.model";
 import {CandidatesService} from "../../services/candidates.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-single-candidate',
@@ -15,7 +15,8 @@ export class SingleCandidateComponent implements OnInit {
   loading$!: Observable<boolean>;
 
   constructor(private csService: CandidatesService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -34,6 +35,6 @@ export class SingleCandidateComponent implements OnInit {
   }
 
   onGoBack() {
-
+    this.router.navigateByUrl('reactive-state/candidates')
   }
 }
