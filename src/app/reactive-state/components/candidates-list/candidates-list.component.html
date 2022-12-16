@@ -28,7 +28,7 @@
   <mat-nav-list *ngIf="candidates$ | async as candidates">
     <a *ngFor="let candidate of candidates" [routerLink]="candidate.id.toString()" mat-list-item>
       <img [alt]="candidate.lastName" [src]="candidate.imageUrl" matListAvatar>
-      <h3 matLine><strong>{{ candidate.firstName }} {{ candidate.lastName }}</strong></h3>
+      <h3 matLine><strong>{{ candidate.firstName | titlecase}} {{ candidate.lastName |uppercase }}</strong></h3>
       <p matLine>{{ candidate.job }} chez <em><font color="#8a2be2">{{ candidate.company }}</font></em></p>
     </a>
   </mat-nav-list>

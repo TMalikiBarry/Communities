@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
+import {combineLatest, map, Observable, startWith} from "rxjs";
 import {CandidatesService} from "../../services/candidates.service";
 import {Candidate} from "../../models/candidate.model";
 import {FormBuilder, FormControl} from "@angular/forms";
@@ -35,14 +35,30 @@ export class CandidatesListComponent implements OnInit {
 
   private initObservables() {
     this.loading$ = this.cService.loading$;
-    this.candidates$ = this.cService.candidates$;
+    // this.candidates$ = this.cService.candidates$;
+    const search$ = this.searchCtrl.valueChanges.pipe(
+      startWith(this.searchCtrl.value)
+    );
+    const searchType$ = this.searchTypeCtrl.valueChanges.pipe(
+      startWith(this.searchTypeCtrl.value)
+    );
+
+    this.candidates$ = combineLatest([
+      search$,
+      searchType$,
+      this.cService.candidates$
+    ]).pipe(
+      map(([search, searchType, candidates]) => candidates.filter(candidate => candidate[searchType as CandidateSearchType]
+        .toLowerCase()
+        .includes(search as string)))
+    );
   }
 
   private initForm() {
     this.searchCtrl = this.fb.control('');
     this.searchTypeOptions = [
-      {value: CandidateSearchType.FIRSTNAME, label: 'Nom'},
-      {value: CandidateSearchType.LASTNAME, label: 'Prénom'},
+      {value: CandidateSearchType.FIRSTNAME, label: 'Prénom'},
+      {value: CandidateSearchType.LASTNAME, label: 'Nom'},
       {value: CandidateSearchType.COMPANY, label: 'Entreprise'},
     ];
   }
