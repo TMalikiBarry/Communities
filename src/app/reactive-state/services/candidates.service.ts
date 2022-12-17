@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {BehaviorSubject, delay, map, Observable, tap} from "rxjs";
+import {BehaviorSubject, delay, map, Observable, switchMap, take, tap} from "rxjs";
 import {Candidate} from "../models/candidate.model";
 import {environment} from "../../../environments/environment";
 
@@ -46,6 +46,20 @@ export class CandidatesService {
       map(candidates => candidates.filter(candidate => candidate.id === id)[0]),
       // map(candidates => candidates.find(candidate => candidate.id === id)),
     );
+  }
+
+  refuseCandidate(id: number) {
+    this.setLoadingStatus(true);
+    this.http.delete(`${environment.apiURL}/candidates/${id}`).pipe(
+      delay(1000),
+      switchMap(() => this.candidates$),
+      take(1),
+      map(candidates => candidates.filter(candidate => !(candidate.id === id))),
+      tap((candidates) => {
+        this._candidates$.next(candidates);
+        this.setLoadingStatus(false)
+      })
+    ).subscribe()
   }
 
   private setLoadingStatus(loading: boolean): void {

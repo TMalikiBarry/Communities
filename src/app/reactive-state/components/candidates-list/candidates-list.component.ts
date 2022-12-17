@@ -37,7 +37,8 @@ export class CandidatesListComponent implements OnInit {
     this.loading$ = this.cService.loading$;
     // this.candidates$ = this.cService.candidates$;
     const search$ = this.searchCtrl.valueChanges.pipe(
-      startWith(this.searchCtrl.value)
+      startWith(this.searchCtrl.value),
+      map(s => s.toLowerCase())
     );
     const searchType$ = this.searchTypeCtrl.valueChanges.pipe(
       startWith(this.searchTypeCtrl.value)
