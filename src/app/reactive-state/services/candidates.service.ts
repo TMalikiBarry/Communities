@@ -48,6 +48,17 @@ export class CandidatesService {
     );
   }
 
+  hireCandidate(id: number) {
+    this.candidates$.pipe(
+      take(1),
+      map(candidates => candidates.map(candidate => candidate.id === id ?
+        {...candidate, company: 'Maliki StartUp Coding'} : candidate)),
+      tap((updatedCandidates) => this._candidates$.next(updatedCandidates)),
+      switchMap(upCandidates => this.http.patch(`${environment.apiURL}/candidates/${id}`,
+        upCandidates.find(candidate => candidate.id === id))),
+    ).subscribe();
+  }
+
   refuseCandidate(id: number) {
     this.setLoadingStatus(true);
     this.http.delete(`${environment.apiURL}/candidates/${id}`).pipe(
