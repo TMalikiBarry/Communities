@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {exhaustMap, map, Observable, tap} from "rxjs";
+import {exhaustMap, map, Observable} from "rxjs";
 import {Post} from "../models/post.model";
 import {environment} from "../../../environments/environment";
 import {Comment} from "../../core/models/comment";
@@ -38,23 +38,22 @@ export class PostsService {
   addComment(postCommented: { comment: string, postId: number }) {
     console.log(postCommented);
     return this.getPostById(postCommented.postId).pipe(
-      tap(() => console.log('recup le post poto...')),
       map(postToUpdate => ({
-        id: postToUpdate.id,
+        /*id: postToUpdate.id,
         userId: postToUpdate.userId,
         title: postToUpdate.title,
         createdDate: postToUpdate.createdDate,
         content: postToUpdate.content,
         imageUrl: postToUpdate.imageUrl,
-        comments: this.newCommentsTable(postToUpdate.comments, postCommented.comment)
-        /*comments: [...Array.from(postToUpdate.comments), {
+        comments: [...Array.from(postToUpdate.comments), {
           id: postToUpdate.comments.length + 100,
           comment:postCommented.comment,
           createdDate: (new Date()).toString(),
           userId: 980
         }]*/
+        ...postToUpdate,
+        comments: this.newCommentsTable(postToUpdate.comments, postCommented.comment)
       })),
-      tap(()=> console.log('en cours de tratiment ...')),
       exhaustMap(updatedPost => this.http.put<Post>(`${environment.apiURL}/posts/${updatedPost.id}`, updatedPost) )
     )
   }
