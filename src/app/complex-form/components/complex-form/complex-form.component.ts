@@ -29,6 +29,8 @@ export class ComplexFormComponent implements OnInit {
   showEmailCtrl$!: Observable<boolean>;
   showEmailError$!: Observable<boolean>;
   showPasswordError$!: Observable<boolean>;
+  showPassword = false;
+  showConfirmPassword = false;
 
   constructor(private fb: FormBuilder,
               private cfService: ComplexFormService) {
@@ -150,6 +152,15 @@ export class ComplexFormComponent implements OnInit {
       return 'Nom d\'utilisateur trop long';
     } else {
       return 'Ce champ contient une erreur';
+    }
+  }
+
+  onHide(hide: "pw" | "cPw", event: MouseEvent) {
+    event.stopPropagation();
+    if (hide == 'pw') {
+      this.showPassword = !this.showPassword
+    } else {
+      this.showConfirmPassword = !this.showConfirmPassword
     }
   }
 }

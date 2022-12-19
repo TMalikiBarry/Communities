@@ -58,12 +58,18 @@
     <div class="form-row">
       <mat-form-field appearance="outline">
         <mat-label>Mot de passe</mat-label>
-        <input formControlName="password" matInput type="password">
+        <input [type]="showPassword? 'text':'password'" formControlName="password" matInput>
+        <button (click)=" onHide('pw', $event) " mat-icon-button matSuffix>
+          <mat-icon>{{showPassword ? 'visibility' : 'visibility_off'}}</mat-icon>
+        </button>
         <mat-error>Ce champ est requis</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Confirmez votre mot de passe</mat-label>
-        <input formControlName="confirmPassword" matInput type="password">
+        <input [type]="showConfirmPassword? 'text':'password'" formControlName="confirmPassword" matInput>
+        <button (click)=" onHide('cPw', $event) " mat-icon-button matSuffix>
+          <mat-icon>{{showConfirmPassword ? 'visibility' : 'visibility_off'}}</mat-icon>
+        </button>
         <mat-error>Ce champ est requis</mat-error>
       </mat-form-field>
     </div>
