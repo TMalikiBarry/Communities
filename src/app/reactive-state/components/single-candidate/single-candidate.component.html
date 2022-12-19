@@ -2,9 +2,9 @@
   <ng-container *ngIf="candidate$ | async as candidate">
     <img [alt]="candidate.firstName + ' ' + candidate.lastName" [src]="candidate.imageUrl">
     <div class="employee-info">
-      <h1>{{ candidate.firstName }} {{ candidate.lastName }}</h1>
+      <h1>{{ candidate.firstName| titlecase }} {{ candidate.lastName | uppercase }}</h1>
       <h2>{{ candidate.job }}, {{ candidate.department }} chez {{ candidate.company }}</h2>
-      <h3>Contact : {{ candidate.email }}</h3>
+      <h3>Contact : <em>{{ candidate.email }}</em></h3>
     </div>
   </ng-container>
   <mat-card-actions>

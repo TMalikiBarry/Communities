@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {BehaviorSubject, delay, map, Observable, tap} from "rxjs";
+import {BehaviorSubject, delay, map, Observable, switchMap, take, tap} from "rxjs";
 import {Candidate} from "../models/candidate.model";
 import {environment} from "../../../environments/environment";
 
@@ -38,11 +38,39 @@ export class CandidatesService {
   }
 
   getCandidateById(id: number): Observable<Candidate> {
+    if (!this.lastCandidatesLoad) {
+      this.getCandidatesFromServer();
+    }
     return this.candidates$.pipe(
-      tap(() => this.getCandidatesFromServer()),
+      // tap(() => this.getCandidatesFromServer()),
       map(candidates => candidates.filter(candidate => candidate.id === id)[0]),
       // map(candidates => candidates.find(candidate => candidate.id === id)),
     );
+  }
+
+  hireCandidate(id: number) {
+    this.candidates$.pipe(
+      take(1),
+      map(candidates => candidates.map(candidate => candidate.id === id ?
+        {...candidate, company: 'Maliki StartUp Coding'} : candidate)),
+      tap((updatedCandidates) => this._candidates$.next(updatedCandidates)),
+      switchMap(upCandidates => this.http.patch(`${environment.apiURL}/candidates/${id}`,
+        upCandidates.find(candidate => candidate.id === id))),
+    ).subscribe();
+  }
+
+  refuseCandidate(id: number) {
+    this.setLoadingStatus(true);
+    this.http.delete(`${environment.apiURL}/candidates/${id}`).pipe(
+      delay(1000),
+      switchMap(() => this.candidates$),
+      take(1),
+      map(candidates => candidates.filter(candidate => !(candidate.id === id))),
+      tap((candidates) => {
+        this._candidates$.next(candidates);
+        this.setLoadingStatus(false)
+      })
+    ).subscribe()
   }
 
   private setLoadingStatus(loading: boolean): void {
