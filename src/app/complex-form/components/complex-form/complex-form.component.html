@@ -81,7 +81,7 @@
     <button (click)="onSubmitForm()" *ngIf="mainForm.valid" [disabled]="loading"
             color="primary" mat-flat-button>ENREGISTRER
     </button>
-    <p *ngIf="mainForm.invalid" style="color: orange"><em>Le bouton 'ENREGISTRER' apparaîtra une fois le formumaire
+    <p *ngIf="mainForm.invalid" style="color: orange; text-align: center"><em>Le bouton 'ENREGISTRER' apparaîtra une fois le formumaire
       valide</em></p>
   </mat-card-actions>
   <mat-spinner *ngIf="loading" class="centering-spinner" color="primary" mode="indeterminate"></mat-spinner>
