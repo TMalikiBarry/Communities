@@ -139,7 +139,7 @@ export class ComplexFormComponent implements OnInit {
     ).subscribe();
   }
 
-  getFormControlErrorText(ctrl: AbstractControl) {
+  getFormControlErrorText(ctrl: AbstractControl): string {
     if (ctrl.hasError('required')) {
       return 'Ce champ est requis';
     } else if (ctrl.hasError('email')) {
